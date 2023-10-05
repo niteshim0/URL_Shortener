@@ -15,7 +15,8 @@ app.use(express.json());
 app.use(express.urlencoded({extended:false}));//middleware to parse the incoming bodies
 app.set("view engine","ejs");//middleware for setting the view engine 
 app.set("views",path.resolve("./views"))//path of views
-
+app.use("/",staticRouter);
+app.use("/url",urlRoute);
 app.get("/url/:shortId",async(req,res)=>{
   const shortId = req.params.shortId;
   const entry = await URL.findOneAndUpdate(
@@ -32,6 +33,5 @@ app.get("/url/:shortId",async(req,res)=>{
   );
   return res.redirect(entry.redirectURL);
 });
-app.use("/",staticRouter);
-app.use("/url",urlRoute);
+
 app.listen(PORT,()=> console.log(`Server started at PORT : ${PORT}`));
